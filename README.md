@@ -50,51 +50,75 @@ Test promo code, request denied:
     {"status":"Denied","promoCodeName":"StudentReduction","reasons":[{"text":"age MUST BE lessThan THAN/TO 18","fact":"age","operator":"lessThan","value":"18"}]}
 
 
+## Promo code format
+
+Sample request from subject can be expressed as this:  
+
+```
+{
+  "name": "WeatherCode1",
+  "avantage": {
+    "percent": 20
+  },
+  "conditions": {
+    "all": [
+      {
+        "any": [
+          {
+            "fact": "age",
+            "operator": "equal",
+            "value": 40
+          },
+          {
+            "all": [
+              {
+                "fact": "age",
+                "operator": "greaterThan",
+                "value": 15
+              },
+              {
+                "fact": "age",
+                "operator": "lessThan",
+                "value": 30
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "fact": "requestDate",
+        "operator": "greaterThan",
+        "value": 1546297200
+      },
+      {
+        "fact": "requestDate",
+        "operator": "lessThan",
+        "value": 1640991600
+      },
+      {
+        "fact": "weatherName",
+        "operator": "equal",
+        "value": "clear"
+      },
+      {
+        "fact": "temperature",
+        "operator": "greaterThan",
+        "value": 15
+      }
+    ]
+  }
+}
+```
+
+
+## Problems
+
+- Dates must be passed as timestamps on registration
+- Weather API requests: when ?
+
+
 ## TODO
 
-- API endpoint for promocode registration
-- API endpoint for promocode checks
-```
-    // Input
-    
-     {
-      "promocode_name": "WeatherCode",
-      "arguments": {
-        "age": 25,
-        "meteo": { "town": "Lyon" }
-      }
-    }
-
-    // Output, code accepted
-    
-    {
-      "promocode_name": "WeatherCode",
-      "status": "accepted",
-      "avantage": { "percent": 20 }
-    }
-    
-    // Output, code denied
-    
-    {
-      "promocode_name": "WeatherCode",
-      "status": "denied",
-      "reasons": {
-        "meteo": "isNotClear"
-      }
-    }
-```
-- Add a rule engine
-```
-    or
-    and
-    
-    eq
-    lt
-    gt
-    after -> gt ?
-    before -> lt ?
-    is -> equal ?
-```
 - Make these rules work
 ```
     // Sample 1
