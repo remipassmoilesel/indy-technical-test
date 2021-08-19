@@ -123,7 +123,7 @@ Sample request from subject can be expressed as this:
 
 ## When is the weather forecast called ? 
 
-The weather is called if one of the facts has the name `weatherName` or `temperature`. I decided to implement it this way 
+The weather forecast is called if one of the facts has the name `weatherName` or `temperature`. I decided to implement it this way 
 to make the use of the weather reusable. 
 
 
@@ -139,8 +139,3 @@ addressable by using [custom operators](https://github.com/CacheControl/json-rul
 - Validate inputs and outputs in HTTP controller
 - Integration tests for API contracts
 - Create our conditions model for database storage (see PromoCode.ts)
-
-
-## TODO
-
-- Share with: RomainKoenig, Cedric25, romaric-juniet, edas, EmelineDava
