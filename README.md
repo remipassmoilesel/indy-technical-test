@@ -6,54 +6,50 @@
 - NPM 7 or > 
 
 
-## Useful commands
+## Getting started
 
-    $ npm install           # Install dependencies
-    
-    $ npm run build         # Build sources
-    $ npm run start         # Start server
-    
-    $ npm run watch         # Watch sources then build
-    $ npm run start:dev     # Start server and restart it when build directory changes
-
-    $ npm run lint          # Lint code with ts-standard      
-    $ npm run lint:fix      # Format code with ts-standard
+```
+  $ git clone git@github.com:remipassmoilesel/indy-technical-test.git
+  $ npm install
+  $ npm run build
+  $ npm run start
+```
 
 
 ## Sample requests
 
 Register a promo code:  
-
+```bash
     $ curl -d '{"name":"StudentReduction","avantage":{"percent":50},"conditions":{"all":[{"fact":"age","operator":"greaterThan","value":15},{"fact":"age","operator":"lessThan","value":18}]}}' \
            -v -H "Content-Type: application/json" \
            http://localhost:10180/promo-code
-
+```
 
 Test promo code by submitting facts, request accepted:    
-
+```bash
     $ curl -d '{"name":"StudentReduction","facts":{"age":16}}' \
            -v -H "Content-Type: application/json" \
            http://localhost:10180/promo-code/validity
 
     // Response
     {"status":"Accepted","promoCodeName":"StudentReduction","avantage":{"percent":50}}
-
+```
 
 Test promo code, request denied:    
-
+```bash
     $ curl -d '{"name":"StudentReduction","facts":{"age":55}}' \
            -v -H "Content-Type: application/json" \
            http://localhost:10180/promo-code/validity
 
     // Response
     {"status":"Denied","promoCodeName":"StudentReduction","reasons":[{"text":"age MUST BE lessThan THAN/TO 18","fact":"age","operator":"lessThan","value":"18"}]}
-
+```
 
 ## Promo code format
 
 Sample request from subject can be expressed as this:  
 
-```
+```json
 {
   "name": "WeatherCode1",
   "avantage": {
@@ -110,6 +106,21 @@ Sample request from subject can be expressed as this:
 ```
 
 
+## Useful commands
+
+```bash
+    $ npm install           # Install dependencies
+    
+    $ npm run build         # Build sources
+    $ npm run start         # Start server
+    
+    $ npm run watch         # Watch sources then build
+    $ npm run start:dev     # Start server and restart it when build directory changes
+
+    $ npm run lint          # Lint code with ts-standard      
+    $ npm run lint:fix      # Format code with ts-standard
+```
+
 ## When is the weather forecast called ? 
 
 The weather is called if one of the facts has the name `weatherName` or `temperature`. I decided to implement it this way 
@@ -131,8 +142,5 @@ addressable by using [custom operators](https://github.com/CacheControl/json-rul
 
 
 ## TODO
-- Publish private repository and share with: RomainKoenig, Cedric25, romaric-juniet, edas, EmelineDava
-- Read code again
-- List of things to do further
-  - Input / output validation
-  - Integration tests
+
+- Share with: RomainKoenig, Cedric25, romaric-juniet, edas, EmelineDava
