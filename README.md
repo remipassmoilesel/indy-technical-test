@@ -164,6 +164,7 @@ Test promo code, request denied:
 - Add documentation
 - Lint, sort package json
 - Publish private repository and share with: RomainKoenig, Cedric25, romaric-juniet, edas, EmelineDava
+- Read code again
 - List of things to do further
   - Input / output validation
-  - ...
+  - Integration tests

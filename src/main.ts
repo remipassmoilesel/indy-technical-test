@@ -1,6 +1,6 @@
 import fastify from 'fastify'
-import { PromoCodeService } from './PromoCodeService'
-import { PromoCodeDao } from './PromoCodeDao'
+import { PromoCodeService } from './promo-code/PromoCodeService'
+import { PromoCodeDao } from './promo-code/PromoCodeDao'
 import { PromoCodeController } from './PromoCodeController'
 
 if (require.main === module) {

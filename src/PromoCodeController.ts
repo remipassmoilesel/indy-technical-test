@@ -1,5 +1,5 @@
 import { FastifyInstance, FastifyReply, FastifyRequest } from 'fastify'
-import { PromoCodeService } from './PromoCodeService'
+import { PromoCodeService } from './promo-code/PromoCodeService'
 import { ValidationRequest } from './entities/ValidationRequest'
 import { PromoCode } from './entities/PromoCode'
 import 'fastify-sensible'
@@ -16,8 +16,8 @@ export class PromoCodeController {
   }
 
   private readonly save = async (req: FastifyRequest<{ Body: PromoCode }>, reply: FastifyReply): Promise<void> => {
-    const promocode = req.body
-    await this.service.addCode(promocode)
+    const promoCode = req.body
+    await this.service.addCode(promoCode)
     reply.send({ status: 'saved' })
   }
 

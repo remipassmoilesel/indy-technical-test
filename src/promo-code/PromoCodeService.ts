@@ -1,6 +1,7 @@
+/* eslint-disable @typescript-eslint/strict-boolean-expressions */
 import { PromoCodeDao } from './PromoCodeDao'
-import { AllConditions, AnyConditions, ConditionProperties, PromoCode } from './entities/PromoCode'
-import { CodeRequestStatus, Failure, ValidationResult } from './entities/ValidationResult'
+import { AllConditions, AnyConditions, ConditionProperties, PromoCode } from '../entities/PromoCode'
+import { CodeRequestStatus, Failure, ValidationResult } from '../entities/ValidationResult'
 import { Engine } from 'json-rules-engine'
 
 export class PromoCodeService {
@@ -13,7 +14,7 @@ export class PromoCodeService {
 
   public async isAllowed (promoCodeName: string, facts: Record<string, string | number>): Promise<ValidationResult> {
     const promoCode = await this.codes.getByName(promoCodeName)
-    if (promoCode == null) {
+    if (!promoCode) {
       throw new Error(`Promo code not found with name: ${promoCodeName}`)
     }
 
