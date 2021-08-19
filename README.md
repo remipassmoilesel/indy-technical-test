@@ -82,8 +82,8 @@
           },
           {
             "@age": {
+              "gt": 15,
               "lt": 30,
-              "gt": 15
             }
           }
         ],
@@ -132,4 +132,5 @@
     }
 ```
 - Add documentation
+- Lint, sort package json
 - Publish private repository and share with: RomainKoenig, Cedric25, romaric-juniet, edas, EmelineDava
