@@ -1,13 +1,26 @@
+import fastify from 'fastify'
+import { PromoCodeService } from './PromoCodeService'
+import { PromoCodeDao } from './PromoCodeDao'
+import { PromoCodeController } from './PromoCodeController'
 
 if (require.main === module) {
-  main()
+  main().catch(err => {
+    console.error(`[FATAL ERROR] ${String(err?.message) ?? 'No message provided'}`, err)
+    process.exit(1)
+  })
 }
 
-function main (): void {
-  console.log('Hello !')
-  throw new Error('Hey hey does source map works ?')
-}
+async function main (): Promise<void> {
+  // Instantiate server
+  const app = fastify({ logger: true })
 
-export function impressMe (a: number, b: number): number {
-  return a + b
+  // Instantiate promo code HTTP service
+  const service = new PromoCodeService(new PromoCodeDao())
+  const controller = new PromoCodeController(service)
+  controller.setup(app)
+
+  // Start server
+  const port = process.env.PORT ?? 10180
+  await app.listen(port, '0.0.0.0')
+  console.log(`Server listening on http://0.0.0.0:${port}`)
 }

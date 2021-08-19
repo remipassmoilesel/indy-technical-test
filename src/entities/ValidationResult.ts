@@ -1,6 +1,6 @@
 import { Avantage } from './Avantage'
 
-export declare type Result = AcceptedCode | DeniedCode
+export declare type ValidationResult = AcceptedCode | DeniedCode
 
 export enum CodeRequestStatus {
   Accepted = 'Accepted',

@@ -21,6 +21,35 @@
     $ npm run lint:fix      # Format code with ts-standard
 
 
+## Sample requests
+
+Register a promo code:  
+
+    $ curl -d '{"name":"StudentReduction","avantage":{"percent":50},"conditions":{"all":[{"fact":"age","operator":"greaterThan","value":15},{"fact":"age","operator":"lessThan","value":18}]}}' \
+           -v -H "Content-Type: application/json" \
+           http://localhost:10180/promo-code
+
+
+Test promo code, request accepted:    
+
+    $ curl -d '{"name":"StudentReduction","facts":{"age":16}}' \
+           -v -H "Content-Type: application/json" \
+           http://localhost:10180/promo-code/validity
+
+    // Response
+    {"status":"Accepted","promoCodeName":"StudentReduction","avantage":{"percent":50}}
+
+
+Test promo code, request denied:    
+
+    $ curl -d '{"name":"StudentReduction","facts":{"age":55}}' \
+           -v -H "Content-Type: application/json" \
+           http://localhost:10180/promo-code/validity
+
+    // Response
+    {"status":"Denied","promoCodeName":"StudentReduction","reasons":[{"text":"age MUST BE lessThan THAN/TO 18","fact":"age","operator":"lessThan","value":"18"}]}
+
+
 ## TODO
 
 - API endpoint for promocode registration
@@ -131,6 +160,10 @@
       }
     }
 ```
+- Connect weather API
 - Add documentation
 - Lint, sort package json
 - Publish private repository and share with: RomainKoenig, Cedric25, romaric-juniet, edas, EmelineDava
+- List of things to do further
+  - Input / output validation
+  - ...

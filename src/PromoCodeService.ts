@@ -1,6 +1,6 @@
 import { PromoCodeDao } from './PromoCodeDao'
 import { AllConditions, AnyConditions, ConditionProperties, PromoCode } from './entities/PromoCode'
-import { CodeRequestStatus, Failure, Result } from './entities/Result'
+import { CodeRequestStatus, Failure, ValidationResult } from './entities/ValidationResult'
 import { Engine } from 'json-rules-engine'
 
 export class PromoCodeService {
@@ -11,7 +11,7 @@ export class PromoCodeService {
     return await this.codes.save(promoCode)
   }
 
-  public async isAllowed (promoCodeName: string, facts: Record<string, string | number>): Promise<Result> {
+  public async isAllowed (promoCodeName: string, facts: Record<string, string | number>): Promise<ValidationResult> {
     const promoCode = await this.codes.getByName(promoCodeName)
     if (promoCode == null) {
       throw new Error(`Promo code not found with name: ${promoCodeName}`)

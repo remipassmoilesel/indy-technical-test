@@ -3,7 +3,7 @@ import { DateTime } from 'luxon'
 import { PromoCodeService } from './PromoCodeService'
 import { PromoCodeDao } from './PromoCodeDao'
 import { expect } from 'chai'
-import { CodeRequestStatus } from './entities/Result'
+import { CodeRequestStatus } from './entities/ValidationResult'
 
 describe('PromoCodeService', () => {
   const sampleCode1: PromoCode = {
