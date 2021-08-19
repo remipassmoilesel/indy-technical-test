@@ -1,5 +1,11 @@
 # Technical test for Indy
 
+## TODO
+
+- Build script (ci.sh)
+- standard
+
+
 ## Prerequisites
 
 - NodeJS 14 or >
