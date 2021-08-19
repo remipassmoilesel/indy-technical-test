@@ -4,6 +4,9 @@ import { PromoCodeService } from './PromoCodeService'
 import { PromoCodeDao } from './PromoCodeDao'
 import { expect } from 'chai'
 import { CodeRequestStatus } from '../entities/ValidationResult'
+import { WeatherDao } from './WeatherDao'
+import * as sinon from 'sinon'
+import { SinonStubbedInstance } from 'sinon'
 
 describe('PromoCodeService', () => {
   const sampleCode1: PromoCode = {
@@ -24,12 +27,12 @@ describe('PromoCodeService', () => {
         },
         // Request date conditions
         {
-          fact: 'requestDate',
+          fact: 'date',
           operator: 'greaterThan',
           value: DateTime.fromObject({ year: 2019, month: 1, day: 1 }).toSeconds()
         },
         {
-          fact: 'requestDate',
+          fact: 'date',
           operator: 'lessThan',
           value: DateTime.fromObject({ year: 2022, month: 1, day: 1 }).toSeconds()
         },
@@ -40,21 +43,24 @@ describe('PromoCodeService', () => {
     }
   }
 
+  let weatherDao: SinonStubbedInstance<WeatherDao>
   let service: PromoCodeService
   beforeEach(async () => {
-    service = new PromoCodeService(new PromoCodeDao())
+    weatherDao = sinon.createStubInstance(WeatherDao)
+    service = new PromoCodeService(new PromoCodeDao(), weatherDao as unknown as WeatherDao)
     await service.addCode(sampleCode1)
   })
 
-  describe.only('isAllowed', () => {
+  describe('isAllowed', () => {
     it('should return allowed', async () => {
       // Prepare
       const facts = {
         age: 40,
-        requestDate: DateTime.fromObject({ year: 2019, month: 2, day: 1 }).toSeconds(),
-        weatherName: 'clear',
-        temperature: 25
+        date: '2019-02-01',
+        weatherName: '', // These facts will be replaced
+        temperature: 0
       }
+      weatherDao.getWeather.resolves({ name: 'clear', temperature: 25 })
 
       // Act
       const result = await service.isAllowed('WeatherCode1', facts)
@@ -71,10 +77,11 @@ describe('PromoCodeService', () => {
       // Prepare
       const facts = {
         age: 55,
-        requestDate: DateTime.fromObject({ year: 2019, month: 2, day: 1 }).toSeconds(),
-        weatherName: 'clear',
-        temperature: 25
+        date: '2019-02-01',
+        weatherName: '',
+        temperature: 0
       }
+      weatherDao.getWeather.resolves({ name: 'clear', temperature: 25 })
 
       // Act
       const result = await service.isAllowed('WeatherCode1', facts)
@@ -94,10 +101,11 @@ describe('PromoCodeService', () => {
       // Prepare
       const facts = {
         age: 18,
-        requestDate: DateTime.fromObject({ year: 2020, month: 2, day: 1 }).toSeconds(),
-        weatherName: 'clear',
-        temperature: 5
+        date: '2019-02-01',
+        weatherName: '',
+        temperature: 0
       }
+      weatherDao.getWeather.resolves({ name: 'clear', temperature: 5 })
 
       // Act
       const result = await service.isAllowed('WeatherCode1', facts)
@@ -108,6 +116,29 @@ describe('PromoCodeService', () => {
         promoCodeName: 'WeatherCode1',
         reasons: [
           { text: 'temperature MUST BE greaterThan THAN/TO 15', fact: 'temperature', operator: 'greaterThan', value: '15' }
+        ]
+      })
+    })
+
+    it('should return denied if date does not fit', async () => {
+      // Prepare
+      const facts = {
+        age: 18,
+        date: '2023-02-01',
+        weatherName: '',
+        temperature: 0
+      }
+      weatherDao.getWeather.resolves({ name: 'clear', temperature: 25 })
+
+      // Act
+      const result = await service.isAllowed('WeatherCode1', facts)
+
+      // Assert
+      expect(result).deep.equals({
+        status: CodeRequestStatus.Denied,
+        promoCodeName: 'WeatherCode1',
+        reasons: [
+          { text: 'date MUST BE lessThan THAN/TO 1640991600', fact: 'date', operator: 'lessThan', value: '1640991600' }
         ]
       })
     })

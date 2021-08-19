@@ -2,6 +2,7 @@ import fastify from 'fastify'
 import { PromoCodeService } from './promo-code/PromoCodeService'
 import { PromoCodeDao } from './promo-code/PromoCodeDao'
 import { PromoCodeController } from './PromoCodeController'
+import { WeatherDao } from './promo-code/WeatherDao'
 
 if (require.main === module) {
   main().catch(err => {
@@ -15,7 +16,7 @@ async function main (): Promise<void> {
   const app = fastify({ logger: true })
 
   // Instantiate promo code HTTP service
-  const service = new PromoCodeService(new PromoCodeDao())
+  const service = new PromoCodeService(new PromoCodeDao(), new WeatherDao())
   const controller = new PromoCodeController(service)
   controller.setup(app)
 

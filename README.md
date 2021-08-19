@@ -1,6 +1,5 @@
 # Technical test for Indy
 
-
 ## Prerequisites
 
 - NodeJS 14 or >
@@ -30,7 +29,7 @@ Register a promo code:
            http://localhost:10180/promo-code
 
 
-Test promo code, request accepted:    
+Test promo code by submitting facts, request accepted:    
 
     $ curl -d '{"name":"StudentReduction","facts":{"age":16}}' \
            -v -H "Content-Type: application/json" \
@@ -111,82 +110,27 @@ Sample request from subject can be expressed as this:
 ```
 
 
-## Problems
+## When is the weather forecast called ? 
 
-- Dates must be passed as timestamps on registration
-- Weather API requests: when ?
+The weather is called if one of the facts has the name `weatherName` or `temperature`. I decided to implement it this way 
+to make the use of the weather reusable. 
+
+
+## Problems 
+
+Dates are usable in ISO format only if fact is named `date`. Otherwise timestamps are needed. This problem should be easily 
+addressable by using [custom operators](https://github.com/CacheControl/json-rules-engine/blob/master/examples/06-custom-operators.js).
+
+
+## Things to do
+
+- Improve facts completion structure and logic
+- Validate inputs and outputs in HTTP controller
+- Integration tests for API contracts
+- Create our conditions model for database storage (see PromoCode.ts)
 
 
 ## TODO
-
-- Make these rules work
-```
-    // Sample 1
-    {
-      "_id": "...",
-      "name": "WeatherCode",
-      "avantage": { "percent": 20 },
-      "restrictions": {
-        "@or": [
-          {
-            "@age": {
-              "eq": 40
-            }
-          },
-          {
-            "@age": {
-              "gt": 15,
-              "lt": 30,
-            }
-          }
-        ],
-        "@date": {
-          "after": "2019-01-01",
-          "before": "2020-06-30"
-        },
-        "@meteo": {
-          "is": "clear",
-          "temp": {
-            "gt": "15" // Celsius here.
-          }
-        }
-      }
-    }
-    
-    // Sample 2
-    {
-      "_id": "...",
-      "name": "WeatherCodeBis",
-      "avantage": { "percent": 30 },
-      "restrictions": {
-        "@or": [
-          {
-            "@age": {
-              "eq": 40
-            }
-          },
-          {
-            "@date": {
-              "after": "2020-01-01",
-              "before": "2029-01-01"
-            }
-          },
-          {
-            "@date": {
-              "after": "2099-01-01"
-            }
-          }
-        ],
-        "@age": {
-          "lt": 30,
-          "gt": 15
-        }
-      }
-    }
-```
-- Connect weather API
-- Add documentation
-- Lint, sort package json
 - Publish private repository and share with: RomainKoenig, Cedric25, romaric-juniet, edas, EmelineDava
 - Read code again
 - List of things to do further

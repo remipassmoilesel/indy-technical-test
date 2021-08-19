@@ -1,3 +1,3 @@
 export interface Avantage {
-  'percent': number
+  percent: number
 }
