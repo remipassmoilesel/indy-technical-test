@@ -1,10 +1,5 @@
 # Technical test for Indy
 
-## TODO
-
-- Build script (ci.sh)
-- standard
-
 
 ## Prerequisites
 
@@ -22,3 +17,5 @@
     $ npm run watch         # Watch sources then build
     $ npm run start:dev     # Start server and restart it when build directory changes
 
+    $ npm run lint          # Lint code with ts-standard      
+    $ npm run lint:fix      # Format code with ts-standard
