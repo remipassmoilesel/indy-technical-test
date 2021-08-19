@@ -1,5 +1,7 @@
 import { Avantage } from './Avantage'
 
+export declare type Result = AcceptedCode | DeniedCode
+
 export enum CodeRequestStatus {
   Accepted = 'Accepted',
   Denied = 'Denied',
@@ -14,7 +16,12 @@ export interface AcceptedCode {
 export interface DeniedCode {
   status: CodeRequestStatus.Denied
   promoCodeName: string
-  reasons: string[]
+  reasons: Failure[]
 }
 
-export declare type Result = AcceptedCode | DeniedCode
+export interface Failure {
+  text: string
+  fact: string
+  operator: string
+  value: string
+}

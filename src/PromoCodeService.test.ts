@@ -1,9 +1,9 @@
-import { PromoCode } from './PromoCode'
+import { PromoCode } from './entities/PromoCode'
 import { DateTime } from 'luxon'
 import { PromoCodeService } from './PromoCodeService'
 import { PromoCodeDao } from './PromoCodeDao'
 import { expect } from 'chai'
-import { CodeRequestStatus } from './Result'
+import { CodeRequestStatus } from './entities/Result'
 
 describe('PromoCodeService', () => {
   const sampleCode1: PromoCode = {
@@ -84,8 +84,8 @@ describe('PromoCodeService', () => {
         status: CodeRequestStatus.Denied,
         promoCodeName: 'WeatherCode1',
         reasons: [
-          'age MUST BE equal THAN/TO 40',
-          'age MUST BE lessThan THAN/TO 30'
+          { text: 'age MUST BE equal THAN/TO 40', fact: 'age', operator: 'equal', value: '40' },
+          { text: 'age MUST BE lessThan THAN/TO 30', fact: 'age', operator: 'lessThan', value: '30' }
         ]
       })
     })
@@ -107,7 +107,7 @@ describe('PromoCodeService', () => {
         status: CodeRequestStatus.Denied,
         promoCodeName: 'WeatherCode1',
         reasons: [
-          'temperature MUST BE greaterThan THAN/TO 15'
+          { text: 'temperature MUST BE greaterThan THAN/TO 15', fact: 'temperature', operator: 'greaterThan', value: '15' }
         ]
       })
     })

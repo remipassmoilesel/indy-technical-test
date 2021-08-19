@@ -1,4 +1,4 @@
-import { PromoCode } from './PromoCode'
+import { PromoCode } from './entities/PromoCode'
 
 const db = new Map<string, PromoCode>()
 

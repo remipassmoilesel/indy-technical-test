@@ -1,6 +1,6 @@
 import { PromoCodeDao } from './PromoCodeDao'
-import { AllConditions, AnyConditions, ConditionProperties, PromoCode } from './PromoCode'
-import { CodeRequestStatus, Result } from './Result'
+import { AllConditions, AnyConditions, ConditionProperties, PromoCode } from './entities/PromoCode'
+import { CodeRequestStatus, Failure, Result } from './entities/Result'
 import { Engine } from 'json-rules-engine'
 
 export class PromoCodeService {
@@ -37,7 +37,7 @@ export class PromoCodeService {
     }
   }
 
-  private getFailures (condition: AllConditions | AnyConditions | ConditionProperties, currents: string[] = []): string[] {
+  private getFailures (condition: AllConditions | AnyConditions | ConditionProperties, currents: Failure[] = []): Failure[] {
     if (condition.result === true) {
       return []
     }
@@ -47,7 +47,13 @@ export class PromoCodeService {
     } else if ('any' in condition) {
       return condition.any.flatMap(c => this.getFailures(c, currents))
     } else {
-      return currents.concat([`${condition.fact} MUST BE ${condition.operator} THAN/TO ${String(condition.value)}`])
+      const text = `${condition.fact} MUST BE ${condition.operator} THAN/TO ${String(condition.value)}`
+      return currents.concat([{
+        text,
+        fact: condition.fact,
+        operator: condition.operator,
+        value: String(condition.value)
+      }])
     }
   }
 }
