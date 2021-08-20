@@ -7,7 +7,7 @@ export interface PromoCode {
 }
 
 // These types where imported from json-rules-engine
-// FIXME: we must create our own model
+// FIXME: we must create our own model in order to limit library adherence
 export interface ConditionProperties {
   fact: string
   operator: string

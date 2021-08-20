@@ -66,15 +66,20 @@ export class PromoCodeService {
    * @private
    */
   private getFailures (condition: AllConditions | AnyConditions | ConditionProperties, currents: Failure[] = []): Failure[] {
+    // Condition passed
     if (condition.result === true) {
       return []
     }
-
-    if ('all' in condition) {
+    // Condition is composed
+    else if ('all' in condition) {
       return condition.all.flatMap(c => this.getFailures(c, currents))
-    } else if ('any' in condition) {
+    }
+    // Condition is composed
+    else if ('any' in condition) {
       return condition.any.flatMap(c => this.getFailures(c, currents))
-    } else {
+    }
+    // Condition failed, we construct error messages
+    else {
       const text = `${condition.fact} MUST BE ${condition.operator} THAN/TO ${String(condition.value)}`
       return currents.concat([{
         text,
@@ -88,10 +93,24 @@ export class PromoCodeService {
   /**
    * This method complete facts if some 'magical' property names are used (see CompletedFacts)
    *
-   * Ideally we can create a 'filter system' which would be more modular than just a method.
-   *
    * @param facts
    * @private
+   */
+  /*
+    TODO: we should use value templates, per example:
+
+    {
+      "facts": {
+        "temperature": "{{ weather.temperature }}",
+        "weather": "{{ weather.name }}",
+      }
+    }
+
+    TODO: If necessary, we should build a "middleware" system to plug several completion systems:
+        - Weather,
+        - Cars availability,
+        - ...
+
    */
   private async completeFacts (facts: Record<string, string | number>): Promise<Record<string, string | number>> {
     const result = { ...facts }
