@@ -6,6 +6,7 @@ import 'fastify-sensible'
 /* eslint-disable @typescript-eslint/no-floating-promises */ // This rule is a bit picky with fastify
 
 // FIXME: validate inputs and outputs with AJV schemas
+// FIXME: we should distinguish API responses from service responses
 export class PromoCodeController {
   constructor (private readonly service: PromoCodeService) {
   }
