@@ -1,4 +1,4 @@
-# Technical test for Indy
+# Technical test for [Indy](https://www.indy.fr/)
 
 ## Prerequisites
 
@@ -144,3 +144,10 @@ addressable by using [custom operators](https://github.com/CacheControl/json-rul
 ## TODO
 
 - Share with: RomainKoenig, Cedric25, romaric-juniet, edas, EmelineDava
+
+
+## Feedbacks
+
+- overall positive result
+- most candidates do not use an existing rule engine and create one from scratch
+- commits must be properly named
